@@ -21,6 +21,21 @@ TODO
 
 #define EXIT "exit\n"
 
+// Function to strip the string from \n
+void strip(char* str_to_strip){
+	int i =0;
+	char curr_char = str_to_strip[0];
+	while(curr_char ~= '\0'){
+		if(curr_char == '\n'){
+			curr_char = '\0';
+			break;
+		}
+		else{
+			i++;
+			curr_char = str_to_strip(i);
+		}
+	}
+}
 // Function responsible for getting new command from user then taking the appropriate action
 void new_command(){
 	// Buffer to save the command that the user enters
