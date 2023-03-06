@@ -68,7 +68,7 @@ void new_command(){
 			int ret_val = execvp(command_words[0], command_words);
 			if(ret_val < 0){
 				perror("Error\n");
-				return;
+				exit(0);
 			}
 		}
 		else{ // Parent process
@@ -100,7 +100,7 @@ void new_command(){
 			int ret_val = execvp(command_words[0], command_words);
 			if(ret_val < 0){
 				perror("Error\n");
-				return;
+				exit(0);
 			}
 		}
 		else{ // Parent process
