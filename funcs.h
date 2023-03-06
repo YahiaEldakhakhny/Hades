@@ -16,4 +16,9 @@ if the char is not found the function returns -1
 int find_char(char* str, char target);
 
 
+/*	Function to iterate over the words in a command
+	and if a call for an env variable is made
+	the function will replace the var with its value
+*/
+void format_env_var(char* cmd);
 

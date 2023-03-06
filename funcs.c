@@ -5,7 +5,11 @@
 #include <stdlib.h>
 
 #define EXIT "exit"
-
+#define BG_CHAR '&'
+#define PRMT ">>> "
+#define CD "cd "
+#define ERR "Error\n"
+#define EXPRT "export "
 
 // Function to count spaces in a string
 int count_char(char* str, char delim){
@@ -56,7 +60,8 @@ void strip(char str_to_strip[]){
 	}
 }
 
-/* Function to find a specific char in a string
+/* Function to find a specific the first instance of 
+a char in a string
 if the char is not found the function returns -1
 */
 int find_char(char* str, char target){
@@ -67,3 +72,48 @@ int find_char(char* str, char target){
 	}
 	return -1;
 }
+
+/*	Function to iterate over the words in a command
+	and if a call for an env variable is made
+	the function will replace the var with its value
+*/
+void format_env_var(char* cmd){
+	int dol_pos = find_char(cmd, '$');
+	// printf("$ at position: %d\n", dol_pos);
+	if(dol_pos >= 0){
+		int pos_nxt_space = find_char(&cmd[dol_pos], ' ');
+		int end_of_cmd = (int) strlen(cmd);
+		int var_end = ((pos_nxt_space >= 0) && (pos_nxt_space < end_of_cmd)) ? (pos_nxt_space -1) : (end_of_cmd -1);
+
+		// printf("End of var at: %d\n", var_end);
+		// Get var name
+		char var_name[10] = {'\0'};
+		int c = 0; //just a counter for the loop
+		for(int i = dol_pos +1; i <= var_end; i++){
+			var_name[c] = cmd[i];
+			c++;
+		}
+		// printf("var name is %s\n", var_name);
+
+		// Get variable value
+		char* var_val = getenv(var_name);
+		// printf("var val is %s\n", var_val);
+		
+		// make a temp var to assemble
+		char temp_cmd[256];
+		for(int j = 0; j < dol_pos; j++){
+			temp_cmd[j] = cmd[j];
+		}
+
+		// add the value of the var
+		strcat(temp_cmd, var_val);
+		// add the rest of the command
+		strcat(temp_cmd, &cmd[var_end + 1]);
+		// Modify cmd
+		strcpy(cmd, temp_cmd);
+		// printf("modified command: %s\n", temp_cmd);
+	}
+}
+
+
+
