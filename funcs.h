@@ -22,3 +22,5 @@ int find_char(char* str, char target);
 */
 void format_env_var(char* cmd);
 
+// Function to write to log file
+void update_logs();

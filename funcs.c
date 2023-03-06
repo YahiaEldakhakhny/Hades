@@ -116,4 +116,19 @@ void format_env_var(char* cmd){
 }
 
 
+// Function to write to log file
+void update_logs(){
+	// create file pointer
+	FILE* logf;
+	logf = fopen("logs.txt", "a");
+	fprintf(logf, "%s\n", "Child process was terminated");
+}
+
+
+
+
+
+
+
+
 
