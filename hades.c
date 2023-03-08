@@ -8,9 +8,9 @@ TODO
 [x] Support the exit command
 [x] Command with no arguments (ls)
 [x] Command with arguments (ls -l)
-[ ] Command to be executed in the background (firefox &)
-[x] Shell builtin commands (cd, echo,...)
-[x] Expression evaluation (export,... etc)
+[x] Command to be executed in the background (firefox &)
+[ ] Shell builtin commands (cd, echo,...)
+[ ] Expression evaluation (export,... etc)
 
 */
 
@@ -81,11 +81,11 @@ void new_command(){
 		strcat(env_var, var_name);
 		strcat(env_var, "=");
 		strcat(env_var, var_val);
+		printf("env_var is %s\n", env_var);
 
-		// Create environment variable and handle errors
+		// Create environment variable
 		if(putenv(env_var) < 0){
 			printf(ERR);
-			exit(0);
 		}
 	}// END OF EXPORT
 	else if(strstr(curr_command, CD) != NULL){ // if the command is cd
@@ -134,6 +134,7 @@ void new_command(){
 		}
 		else{ // Parent process
 			usleep(2);
+			kill(pid, SIGTSTP);
 			// TODO: write to log file
 			printf("process in the background\n");
 		}
@@ -178,15 +179,10 @@ void new_command(){
 }
 
 int main(){
-	// Signal handling
-	struct sigaction sa = {0};
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = &update_logs;
-	sigaction(SIGCHLD, &sa, NULL);
-
 	while(1){
 		new_command();
 	}
+
 
 	return 0;
 }

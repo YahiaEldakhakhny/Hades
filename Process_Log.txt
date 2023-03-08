@@ -1,4 +1,0 @@
-child process was terminated pid = 68 
-child process was terminated pid = 70 
-child process was terminated pid = 71 
-child process was terminated pid = 69 
