@@ -134,7 +134,6 @@ void new_command(){
 		}
 		else{ // Parent process
 			usleep(2);
-			kill(pid, SIGTSTP);
 			// TODO: write to log file
 			printf("process in the background\n");
 		}
