@@ -28,12 +28,15 @@ TODO
 #define CD "cd "
 #define ERR "Error\n"
 #define EXPRT "export "
+#define ECHO "echo "
+#define WORD_SIZE 20 // ASSUME NO WORD IS LARGER THAN 20 CHAR
+#define CMD_SIZE 256 // ASSUNE NO COMMAND IS LARGER THAN 256 CHAR
 
 
 // Function responsible for getting new command from user then taking the appropriate action
 void new_command(){
 	// Buffer to save the command that the user enters
-	char curr_command[256] = {'\0'};
+	char curr_command[CMD_SIZE] = {'\0'};
 
 	// Prompt
 	printf(PRMT);
@@ -41,17 +44,30 @@ void new_command(){
 
 	// remove extra \n at the end of the command
 	strip(curr_command);
+
+	// Make sure command is not empty
+	if(strlen(curr_command) <= 0){
+		return;
+	}
+
+	// Account for environment variables
+	format_env_var(curr_command);
 	
 	// Process command
 	if(!strcmp(curr_command, EXIT)){
 		exit(0);
 	}// END OF EXIT
+	else if(strstr(curr_command, ECHO) != NULL){ // if the comand is echo
+		int end_of_echo = find_char(curr_command, ' ');
+		printf("%s\n", &curr_command[end_of_echo +1]);
+		
+	}// END OF ECHO
 	else if(strstr(curr_command, EXPRT) != NULL){ // if the command is export
 		int name_pos = find_char(curr_command, ' ') + 1;
 		int equ_pos = find_char(curr_command, '=');
 		int c = 0; // just a counter for loops
-		char var_name[10] = {'\0'};
-		char var_val[10] = {'\0'};
+		char var_name[WORD_SIZE] = {'\0'};
+		char var_val[WORD_SIZE] = {'\0'};
 		
 		// Get var_name from current_command
 		for(int i = name_pos;; i++){
@@ -77,11 +93,12 @@ void new_command(){
 		}
 
 		// generate string needed to initialize env var
-		char env_var[40] = {'\0'};// 40 is just an arbitrary number
+		// env_var contains 2 words (var_name and var_value)
+		char env_var[2* WORD_SIZE] = {'\0'};
 		strcat(env_var, var_name);
 		strcat(env_var, "=");
 		strcat(env_var, var_val);
-		printf("env_var is %s\n", env_var);
+		// printf("%s\n", env_var);
 
 		// Create environment variable
 		if(putenv(env_var) < 0){
@@ -141,8 +158,6 @@ void new_command(){
 
 	}// END OF BACKGROUND PROCESS
 	else{
-		// Account for environment variables
-		format_env_var(curr_command);
 		// Create array to hold words of the command
 		int words_count = count_char(curr_command, ' ') + 1;
 		// words_cound +1 because the last element is NULL

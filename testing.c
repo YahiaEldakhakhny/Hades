@@ -163,14 +163,8 @@ void new_command(){
 }
 
 int main(){
-	while(1){
-		new_command();
-	}
-	// char cmd[256] = "ls $y";
-	// printf("original cmd: %s\n", cmd);
-	// putenv("y=-a -l -h");
-	// format_env_var(cmd);
-	// printf("%s\n", cmd);
+	putenv("x=-l -a -h");
+	printf("%s\n", getenv("x"));
 	return 0;
 
 }
