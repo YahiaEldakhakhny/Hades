@@ -150,10 +150,7 @@ void new_command(){
 			}
 		}
 		else{ // Parent process
-			usleep(2);
-			kill(pid, SIGTSTP);
-			// TODO: write to log file
-			printf("process in the background\n");
+			return;
 		}
 
 	}// END OF BACKGROUND PROCESS
@@ -194,10 +191,12 @@ void new_command(){
 }
 
 int main(){
+	// When a child process exits it should be handled
+    signal(SIGCHLD, update_logs_on_exit);
+
 	while(1){
 		new_command();
 	}
-
 
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include <stdio.h>
+\#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -119,5 +119,18 @@ void format_env_var(char* cmd){
 	}
 }
 
+// Function to handle the child processes
+void update_logs_on_exit(){
+    int stat;
+	FILE* log_file;
+	
+   while(waitpid(-1 , &stat , WUNTRACED | WNOHANG| WCONTINUED) > 0){
+        if(WIFEXITED(stat)){
+            log_file = fopen ("log.txt","a");
+            fprintf (log_file, "child process was terminated\n");
+            fclose(log_file);
+        }
+    }
+}
 
 
