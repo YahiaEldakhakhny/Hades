@@ -9,8 +9,8 @@ TODO
 [x] Command with no arguments (ls)
 [x] Command with arguments (ls -l)
 [x] Command to be executed in the background (firefox &)
-[ ] Shell builtin commands (cd, echo,...)
-[ ] Expression evaluation (export,... etc)
+[x] Shell builtin commands (cd, echo,...)
+[x] Expression evaluation (export,... etc)
 
 */
 

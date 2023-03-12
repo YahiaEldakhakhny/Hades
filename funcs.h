@@ -22,5 +22,5 @@ int find_char(char* str, char target);
 */
 void format_env_var(char* cmd);
 
-// Function to handle the child processes
+// Function to handle the child processes exit signal
 void update_logs_on_exit();
