@@ -1,3 +1,4 @@
+// Testing branches
 // Function to count spaces in a string
 int count_char(char* str, char delim);
 
